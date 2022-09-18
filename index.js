@@ -5,8 +5,9 @@ const {connectDb} = require('./db/Connection')
 const app = express()
 const {noteRoutes} = require('./routes/NoteRouter')
 const {userRoutes} = require('./routes/UserRouter')
-
+const cors = require('cors')
 // middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
