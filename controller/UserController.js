@@ -13,8 +13,8 @@ const login = async (req, res) => {
       if (passMatched) {
         // generate the jwt token
         const token = await sign({ id: user._id }, process.env.TOKEN_SECRET);
-        res.cookie("authToken", token, { httpOnly: true });
-        return res.status(200).json({ status:200,message: "Logged In",token });
+        res.cookie("authToken", token, { httpOnly: true,sameSite:'none',secure:true});
+        return res.status(200).json({ status:0,message: "Logged In"});
       } else {
         return res.status(504).json({ status:504,message: "Bad Credentials !!" });
       }
