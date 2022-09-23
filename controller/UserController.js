@@ -8,15 +8,15 @@ const login = async (req, res) => {
   try {
     if (await User.count({ email })) {
       // match the password
-      const user= await User.findOne({email});
+      const user = await User.findOne({ email });
       const passMatched = await compare(password, user.password);
       if (passMatched) {
         // generate the jwt token
         const token = await sign({ id: user._id }, process.env.TOKEN_SECRET);
-        res.cookie("authToken", token, { sameSite:'none',secure:true});
-        return res.status(200).json({ status:0,message: "Logged In"});
+        res.cookie("authToken", token, { httpOnly: true, sameSite: 'none', secure: true });
+        return res.status(200).json({ status: 0, message: "Logged In" });
       } else {
-        return res.status(504).json({ status:1,message: "Bad Credentials !!" });
+        return res.status(504).json({ status: 1, message: "Bad Credentials !!" });
       }
     } else {
       return res.status(404).json({ message: "User Not Found !!" });
@@ -47,8 +47,8 @@ const register = async (req, res) => {
   }
 };
 
-const logout = (req,res)=>{
+const logout = (req, res) => {
   res.clearCookie('authToken');
-  return res.status(200).json({message:"Logged Out."})
+  return res.status(200).json({ message: "Logged Out." })
 }
 module.exports = { login, register, logout };
